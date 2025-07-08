@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Gaussian Splatting Viewer</title>
+    <link rel="stylesheet" href="gs-viewer.css" />
+</head>
+<body>
+    <div id="progress-container">
+        <dialog open id="progress-dialog">
+            <p>
+                <label for="progress-indicator">Loading scene...</label>
+            </p>
+            <progress max="100" id="progress-indicator"></progress>
+        </dialog>
+    </div>
+
+    <div class="gs-viewer">
+        <div id="gs-viewer-container">
+            <div id="gs-viewer-left">
+                <canvas id="gs-canvas-left"></canvas>
+                <div class="gs-viewer-label">Combined</div>
+                <div id="gs-progress-dialog-left" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <progress id="gs-progress-indicator-left" value="0" max="100" style="width: 200px; height: 20px;"></progress>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                </div>
+            </div>
+            <div id="gs-viewer-right">
+                <canvas id="gs-canvas-right"></canvas>
+                <div class="gs-viewer-label">Exploded</div>
+                <div id="gs-progress-dialog-right" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <progress id="gs-progress-indicator-right" value="0" max="100" style="width: 200px; height: 20px;"></progress>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                </div>
+            </div>
+        </div>
+        <div id="gs-button-block"></div>
+          <div class="gs-swiper">
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-wrapper" id="gs-image-slider"></div>
+  </div>
+    </div>
+
+    <script src="gs-viewer.js" type="module"></script>
+</body>
+</html> 

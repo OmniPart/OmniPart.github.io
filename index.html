@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="OmniPart: Part-Aware 3D Generation with Semantic Decoupling and Structural Cohesion" />
+    <meta
+      name="keywords"
+      content="Part-Aware 3D Generation" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Generative 3D Part Amodal Segmentation
+    </title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css" />
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css" />
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+    <link rel="stylesheet" href="./static/css/index.css" />
+    <link rel="icon" href="./static/images/favicon.png" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.7/build/gaussian-splats-3d.umd.cjs"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+    <!--  Scene Viewer -->
+    <link rel="stylesheet" href="modules/SceneViewer/scene-viewer.css" />
+
+    <!-- GS Viewer -->
+    <link rel="stylesheet" href="modules/GSViewer/gs-viewer.css" />
+
+    <!-- Video Viewer -->
+    <link rel="stylesheet" href="modules/VideoViewer/video-viewer.css" />
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <!-- <div class="navbar-menu">
+        <div class="navbar-start" style="flex-grow: 1; justify-content: center">
+          <a class="navbar-item" href="https://github.com/huanngzh">
+            <span class="icon">
+              <i class="fas fa-home"></i>
+            </span>
+          </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> More Research </a>
+            <div class="navbar-dropdown">
+              <a
+                class="navbar-item"
+                href="https://vast-ai-research.github.io/HoloPart/"
+                target="_blank">
+                HoloPart
+              </a>
+              <a
+                class="navbar-item"
+                href="https://yhyang-myron.github.io/SAMPart3D-website/"
+                target="_blank">
+                SAMPart3D
+              </a>
+              <a
+                class="navbar-item"
+                href="https://huanngzh.github.io/MIDI-Page/"
+                target="_blank">
+                MIDI
+              </a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </nav>
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column is-full-width has-text-centered">
+              <h1 class="title is-1 publication-title">
+                OmniPart: Part-Aware 3D Generation with Semantic Decoupling and Structural Cohesion
+              </h1>
+              <div class="is-size-5 publication-authors">
+                Anonymous Authors
+                
+              </div>
+
+              <div class="column is-full-width has-text-centered">
+                <div class="publication-links">
+                  <!-- PDF Link. -->
+                  <!-- <span class="link-block">
+                    <a
+                      href=""
+                      target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper</span>
+                    </a>
+                  </span> -->
+                  <!-- Video Link. -->
+                  <!-- <span class="link-block">
+                    <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fab fa-youtube"></i>
+                      </span>
+                      <span>Video</span>
+                    </a>
+                  </span> -->
+                  <!-- Code Link. -->
+                  <!-- <span class="link-block">
+                    <a
+                      href=""
+                      target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                    </a>
+                  </span> -->
+                  <!-- Model Link. -->
+                  <!-- <span class="link-block">
+                    <a
+                      href=""
+                      target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fa fa-database"></i>
+                      </span>
+                      <span>Model</span>
+                    </a>
+                  </span> -->
+                  <!-- Demo Link. -->
+                  <span class="link-block">
+                    <a
+                      href=""
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="far fa-smile"></i>
+                      </span>
+                      <span>Demo</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero teaser">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <video controls autoplay muted loop playsinline height="80%">
+              <source src="https://huggingface.co/datasets/omnipart/OmniPart-page-assets/resolve/main/videos/demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                The creation of 3D assets with explicit, editable part structures is crucial for advancing interactive applications, yet most generative methods produce only monolithic shapes, limiting their utility.
+                We introduce OmniPart, a novel framework for part-aware 3D object generation designed to achieve high semantic decoupling among components while maintaining robust structural cohesion. 
+                OmniPart uniquely decouples this complex task into two synergistic stages: (1) an autoregressive structure planning module generates a controllable, variable-length sequence of 3D part bounding boxes, 
+                critically guided by flexible 2D part masks that allow for intuitive control over part decomposition without requiring direct correspondences or semantic labels; and (2) a spatially-conditioned rectified 
+                flow model, efficiently adapted from a pre-trained holistic 3D generator, synthesizes all 3D parts simultaneously and consistently within the planned layout. Our approach supports user-defined part granularity, 
+                precise localization, and enables diverse downstream applications.
+                Extensive experiments demonstrate that OmniPart achieves state-of-the-art performance, paving the way for more interpretable, editable, and versatile 3D content.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/ Abstract. -->
+      </div>
+    </section>
+
+    <!-- <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Demo Video</h2>
+            </div>
+            <br />
+            <div class="has-text-justified">
+              3D part amodal segmentation is capable of numerous downstream applications, 
+              such as <strong>Geometry Editing, Geometry Processing, Material Editing and Animation</strong>.
+            </div>
+            <br />
+            <video controls autoplay muted loop playsinline height="80%">
+              <source src="./assets/videos/demo.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- Scripts Start -->
+    <script type="module">
+      import { ViewerModule } from "./modules/SceneViewer/scene-viewer.js";
+      import { GSViewerModule } from "./modules/GSViewer/gs-viewer.js";
+
+      const viewer = new ViewerModule(
+        ".scene-viewer",
+        [
+          "000",
+          "001",
+          "003",
+          "004",
+          "005",
+          "006",
+          "007",
+          "010",
+          "011",
+          "012",
+        ],
+        "https://huggingface.co/datasets/omnipart/OmniPart-page-assets/resolve/main/3d-models",
+        // "assets/3d-models",
+        "assets/images"
+      );
+      viewer.init();
+
+      const viewer2 = new ViewerModule(
+        "#scene-viewer-2",
+        [
+          "001",
+          "002",
+          "003",
+          "008",
+          "000",
+          "009",
+        ],
+        "https://huggingface.co/datasets/omnipart/OmniPart-page-assets/resolve/main/3d-models",
+        // "assets/3d-models",
+        "assets/images"
+      );
+      viewer2.init();
+
+      const gsViewer = new GSViewerModule(
+        ".gs-viewer",
+        [
+          "000",
+          "001",
+          "003",
+          "004",
+          "005",
+          "006",
+          "007",
+          "010",
+          "011",
+          "012",
+        ],
+        "https://huggingface.co/datasets/omnipart/OmniPart-page-assets/resolve/main/3d-models",
+        // "assets/3d-models",
+        "assets/images"
+      );
+      gsViewer.init();
+    </script>
+    <!-- Scripts End -->
+
+    <section class="section" style="padding-top: 0">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Interactive Bounding Box and Mesh</h2>
+            </div>
+            <div class="scene-viewer">
+              <!-- Scene Viewer -->
+              <div id="viewer-container">
+                <div id="viewer-left">
+                                     <div class="viewer-label">Bounding Box</div>
+                  <div id="loading-overlay-left" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <div class="loading-spinner"></div>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                  </div>
+                </div>
+                <div id="viewer-right">
+                                     <div class="viewer-label">Mesh</div>
+                  <div id="loading-overlay-right" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <div class="loading-spinner"></div>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                  </div>
+                </div>
+              </div>
+              <div id="button-block" style="text-align: center; margin: 10px auto;"></div>
+              <div class="scene-swiper">
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-wrapper" id="image-slider"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">3D Gaussian Splatting</h2>
+            </div>
+            <div class="content has-text-justified" style="margin-bottom: 20px;">
+              <!-- <p style="text-align: center;">
+                Compare the original and exploded 3D Gaussian Splatting representations side by side. 
+                Click on the images below to explore different models.
+              </p> -->
+            </div>
+            <div class="gs-viewer">
+              <!-- GS Viewer -->
+              <div id="gs-viewer-container">
+                <div id="gs-viewer-left">
+                  <canvas id="gs-canvas-left"></canvas>
+                  <div class="gs-viewer-label">Combined</div>
+                  <div id="gs-progress-dialog-left" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <progress id="gs-progress-indicator-left" value="0" max="100" style="width: 200px; height: 20px;"></progress>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                  </div>
+                </div>
+                <div id="gs-viewer-right">
+                  <canvas id="gs-canvas-right"></canvas>
+                  <div class="gs-viewer-label">Exploded</div>
+                  <div id="gs-progress-dialog-right" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <progress id="gs-progress-indicator-right" value="0" max="100" style="width: 200px; height: 20px;"></progress>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                  </div>
+                </div>
+              </div>
+              <div id="gs-button-block"></div>
+                             <div class="gs-swiper">
+                 <div class="swiper-button-prev"></div>
+                 <div class="swiper-button-next"></div>
+                 <div class="swiper-wrapper" id="gs-image-slider"></div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <div class="has-text-centered">
+              <h2 class="title is-3">Mask-Guided Multi-Granularity Generation</h2>
+            </div>
+            <div class="scene-viewer" id="scene-viewer-2">
+              <!-- Scene Viewer 2 -->
+              <div id="viewer-container-2">
+                <div id="viewer-left-2">
+                  <div class="viewer-label">Bounding Box</div>
+                  <div id="loading-overlay-left-2" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <div class="loading-spinner"></div>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                  </div>
+                </div>
+                <div id="viewer-right-2">
+                  <div class="viewer-label">Mesh</div>
+                  <div id="loading-overlay-right-2" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px; border-radius: 8px; z-index: 10;">
+                    <div class="loading-spinner"></div>
+                    <div style="text-align: center; margin-top: 10px;">Loading...</div>
+                  </div>
+                </div>
+              </div>
+              <div id="button-block-2" style="text-align: center; margin: 10px auto;"></div>
+              <div class="scene-swiper">
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-wrapper" id="image-slider-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="has-text-centered">
+          <h2 class="title is-3">Method Overview</h2>
+        </div>
+        <br />
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <br />
+            <img src="./assets/images/pipeline-overview.png" class="" alt="" />
+            OmniPart generates part-aware, controllable, and high-quality 3D content through two key stages: part structure planning and structured part latent generation.
+            Built upon TRELLIS, which provides a spatially structured sparse voxel latent space, OmniPart first predicts part-level bounding boxes via an auto-regressive planner.
+            Then, part-specific latent codes are generated through fine-tuning of a large-scale shape model pretrained on overall objects.
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="has-text-centered">
+          <h2 class="title is-3">Applications</h2>
+        </div>
+        <br />
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <br />
+            <img src="./assets/images/application.png" class="" alt="" />
+            OmniPart generates high-quality part-aware 3D content directly from a single input image and naturally supports a range of downstream applications, including Animation, Mask-Controlled Generation, Multi-Granularity Generation, Material Editing, and Geometry Processing.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="has-text-centered">
+          <h2 class="title">BibTeX</h2>
+        </div>
+        <div
+          class="columns is-centered has-text-centered"
+          style="padding-bottom: 1.5rem">
+          <div class="column is-four-fifths">
+            <div class="content has-text-justified">
+              <pre><code>@article{yang2025holopart,
+  title={HoloPart: Generative 3D Part Amodal Segmentation}, 
+  author={Yang, Yunhan and Guo, Yuan-Chen and Huang, Yukun and Zou, Zi-Xin and Yu, Zhipeng and Li, Yangguang and Cao, Yan-Pei and Liu, Xihui},
+  journal={arXiv preprint arXiv:2504.07943},
+  year={2025}
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </section>
+
+    <footer class="footer">
+      <div class="container is-max-desktop">
+        <!-- <div class="content has-text-centered">
+          <a class="icon-link" href="">
+            <i class="fas fa-file-pdf"></i>
+          </a>
+          <a
+            class="icon-link"
+            href=""
+            class="external-link"
+            disabled>
+            <i class="fab fa-github"></i>
+          </a>
+        </div> -->
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <div class="content">
+              <!-- <p style="text-align: center">
+                Source code can be found at
+                <a href="" target="_blank"
+                  >OmniPart-Page</a
+                >.  -->
+                The website template is borrowed from
+                <a href="https://nerfies.github.io/" target="_blank">Nerfies</a
+                > and 
+                <a href="https://github.com/VAST-AI-Research/HoloPart/tree/page" target="_blank">HoloPart-Page</a
+                >.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
